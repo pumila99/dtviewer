@@ -1,0 +1,67 @@
+// SPDX-License-Identifier: MIT
+/*
+ * 架空ボード DM1000（LCD 付き）
+ * USE_LCD を定義すると LCD パネル、定義しないと HDMI 側になる
+ */
+/dts-v1/;
+#include "demo100-myboard.dtsi"
+
+#define BOARD_MODEL "Demo DM1000"
+
+/ {
+	model = BOARD_MODEL;
+	compatible = "demo,dm1000", "demo,demo100";
+
+#ifdef USE_LCD
+	backlight: backlight {
+		compatible = "pwm-backlight";
+		brightness-levels = <0 64 128 255>;
+		default-brightness-level = <3>;
+	};
+#endif
+};
+
+&leds {
+	led_status: led-status {
+		label = "status";
+		gpios = <&gpio0 4 GPIO_ACTIVE_LOW>;
+	};
+};
+
+&uart1 {
+	/* Bluetooth 用 */
+	status = "okay";
+};
+
+&sdmmc {
+	bus-width = <4>;
+	cd-gpios = <&gpio0 7 GPIO_ACTIVE_LOW>;
+	status = "okay";
+};
+
+&spi0 {
+	status = "okay";
+
+	flash@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <50000000>;
+	};
+};
+
+#ifdef USE_LCD
+&vop {
+	status = "okay";
+};
+
+&dsi {
+	status = "okay";
+
+	panel@0 {
+		compatible = "demo,lcd-720p";
+		reg = <0>;
+		backlight = <&backlight>;
+		power-supply = <&vcc_3v3>;
+	};
+};
+#endif

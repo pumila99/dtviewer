@@ -1,0 +1,74 @@
+// SPDX-License-Identifier: MIT
+/*
+ * ボード共通部分（DM1000 / DM2000 で共有）
+ */
+#include "demo100.dtsi"
+
+/ {
+	aliases {
+		serial0 = &uart0;
+		mmc0 = &emmc;
+	};
+
+	chosen {
+		stdout-path = &uart0;
+	};
+
+	vcc_sys: regulator-vcc-sys {
+		compatible = "regulator-fixed";
+		regulator-name = "vcc_sys";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		regulator-always-on;
+	};
+
+	leds: leds {
+		compatible = "gpio-leds";
+
+		led_power: led-power {
+			label = "power";
+			gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+	};
+};
+
+&uart0 {
+	status = "okay";
+};
+
+&i2c0 {
+	status = "okay";
+	clock-frequency = <400000>;
+
+	pmic: pmic@20 {
+		compatible = "demo,demo-pmic100";
+		reg = <0x20>;
+		interrupt-parent = <&gpio0>;
+		interrupts = <5 GPIO_ACTIVE_LOW>;
+		vcc1-supply = <&vcc_sys>;
+
+		regulators {
+			vdd_core: dcdc1 {
+				regulator-name = "vdd_core";
+				regulator-min-microvolt = <900000>;
+				regulator-max-microvolt = <1100000>;
+			};
+
+			vcc_3v3: ldo1 {
+				regulator-name = "vcc_3v3";
+				regulator-min-microvolt = <3300000>;
+				regulator-max-microvolt = <3300000>;
+			};
+		};
+	};
+};
+
+&emmc {
+	bus-width = <8>;
+	non-removable;
+	vmmc-supply = <&vcc_3v3>;
+	status = "okay";
+};
+
+/delete-node/ &debug;

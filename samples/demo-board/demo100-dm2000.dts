@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: MIT
+/*
+ * 架空ボード DM2000（画面なし・SD なし）
+ */
+/dts-v1/;
+#include "demo100-myboard.dtsi"
+
+/ {
+	model = "Demo DM2000";
+	compatible = "demo,dm2000", "demo,demo100";
+};
+
+&i2c0 {
+	/* DM2000 は高速モード */
+	clock-frequency = <1000000>;
+
+	sensor@48 {
+		compatible = "ti,tmp102";
+		reg = <0x48>;
+	};
+};
+
+&led_power {
+	default-state = "keep";
+};
