@@ -25,7 +25,7 @@ jobs:
         run: xvfb-run -a npm run test:it
       - run: npm run build
       - run: npm run package -- -o dtviewer.vsix
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: vsix
           path: dtviewer.vsix
