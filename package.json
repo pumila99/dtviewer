@@ -1,0 +1,191 @@
+{
+  "name": "dtviewer",
+  "displayName": "DTビューア（仮）",
+  "description": "デバイスツリー（.dts/.dtsi）を cpp 後の合算結果で見る VSCode 拡張",
+  "version": "0.1.0",
+  "publisher": "pumila99",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pumila99/dtviewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pumila99/dtviewer/issues"
+  },
+  "homepage": "https://github.com/pumila99/dtviewer#readme",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "devicetree",
+    "dts",
+    "dtsi",
+    "linux",
+    "embedded"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "workspaceContains:**/*.dts",
+    "workspaceContains:**/*.dtsi"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dtviewer",
+          "title": "DTビューア",
+          "icon": "media/dtviewer.svg"
+        }
+      ]
+    },
+    "views": {
+      "dtviewer": [
+        {
+          "id": "dtviewer.structure",
+          "name": "構造"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "dtviewer.structure",
+        "contents": ".dts / .dtsi を開くか、トップ dts を選んでください。\n[トップ dts を選ぶ](command:dtviewer.selectTopDts)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "dtviewer.openInEditor",
+        "title": "エディタで開く",
+        "category": "DT"
+      },
+      {
+        "command": "dtviewer.selectTopDts",
+        "title": "トップ dts を選び直す",
+        "category": "DT",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "dtviewer.reload",
+        "title": "再読込",
+        "category": "DT",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "dtviewer.viewByAddress",
+        "title": "アドレス順で表示",
+        "category": "DT",
+        "icon": "$(list-ordered)"
+      },
+      {
+        "command": "dtviewer.viewByCategory",
+        "title": "カテゴリ別で表示",
+        "category": "DT",
+        "icon": "$(symbol-class)"
+      },
+      {
+        "command": "dtviewer.hideDisabled",
+        "title": "disabled を隠す",
+        "category": "DT",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "dtviewer.showDisabled",
+        "title": "disabled も表示",
+        "category": "DT",
+        "icon": "$(eye-closed)"
+      },
+      {
+        "command": "dtviewer.switchToFileBoard",
+        "title": "このファイルのボードに切り替え",
+        "category": "DT"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "dtviewer.viewByAddress",
+          "when": "view == dtviewer.structure && dtviewer.viewMode != 'address'",
+          "group": "navigation@1"
+        },
+        {
+          "command": "dtviewer.viewByCategory",
+          "when": "view == dtviewer.structure && dtviewer.viewMode == 'address'",
+          "group": "navigation@1"
+        },
+        {
+          "command": "dtviewer.hideDisabled",
+          "when": "view == dtviewer.structure && !dtviewer.hideDisabled",
+          "group": "navigation@2"
+        },
+        {
+          "command": "dtviewer.showDisabled",
+          "when": "view == dtviewer.structure && dtviewer.hideDisabled",
+          "group": "navigation@2"
+        },
+        {
+          "command": "dtviewer.selectTopDts",
+          "when": "view == dtviewer.structure",
+          "group": "navigation@3"
+        },
+        {
+          "command": "dtviewer.reload",
+          "when": "view == dtviewer.structure",
+          "group": "navigation@4"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "dtviewer.openInEditor",
+          "when": "view == dtviewer.structure && viewItem =~ /^dtnode/",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "dtviewer.openInEditor",
+          "when": "false"
+        },
+        {
+          "command": "dtviewer.switchToFileBoard",
+          "when": "false"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:gt": "vitest run -c vitest.golden.config.mts",
+    "test:it": "node scripts/build.mjs --tests && node out/integration/runTest.js",
+    "build": "node scripts/build.mjs",
+    "package": "vsce package",
+    "vscode:prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.20.4",
+    "@types/vscode": "1.90.0",
+    "@vitest/coverage-v8": "^5.0.1",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.11.0",
+    "glob": "^13.0.6",
+    "jsonc-parser": "^3.3.1",
+    "mocha": "^12.0.2",
+    "tree-sitter-devicetree": "^0.15.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.1",
+    "web-tree-sitter": "^0.27.0"
+  }
+}

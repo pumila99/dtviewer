@@ -1,0 +1,41 @@
+/dts-v1/;
+
+/ {
+	model = "Basic Board";
+	compatible = "acme,basic", "acme,soc1";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	// メモリ
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0x80000000 0x10000000>;
+	};
+
+	uart0: serial@1000 {
+		compatible = "acme,soc1-uart";
+		reg = <0x1000 0x100>;
+		status = "okay";
+	};
+
+	serial@2000 {
+		compatible = "acme,soc1-uart";
+		reg = <0x2000 0x100>;
+		status = "disabled";
+	};
+
+	chosen {
+		stdout-path = &uart0;
+		bootargs = "console=ttyS0,115200";
+	};
+
+	blob {
+		data = [01 02 ab];
+		small = /bits/ 8 <0x12 0x34>;
+		wide = /bits/ 16 <0x1234>;
+		big = /bits/ 64 <0x100000000>;
+		expr = <(1 + 2) (0x10 << 4) (-1) (5 > 3 ? 7 : 9)>;
+		flag;
+		mixed = "a", <1>, [ff];
+	};
+};

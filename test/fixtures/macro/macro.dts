@@ -1,0 +1,15 @@
+/dts-v1/;
+#include <dt-bindings/acme.h>
+
+#define LOCAL_SPEED 115200
+#define BOARD_NAME "Macro Board"
+
+/ {
+	model = BOARD_NAME;
+	compatible = "acme,macro";
+
+	dev {
+		interrupts = <ACME_IRQ(3) ACME_GPIO_ACTIVE_LOW>;
+		speed = <LOCAL_SPEED>;
+	};
+};

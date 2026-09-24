@@ -1,0 +1,52 @@
+name: CI
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: cpp・dtc・xvfb を入れる
+        run: sudo apt-get update && sudo apt-get install -y cpp device-tree-compiler xvfb
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:unit -- --coverage
+      - run: npm run test:gt
+      - name: 画面テスト
+        run: xvfb-run -a npm run test:it
+      - run: npm run build
+      - run: npm run package -- -o dtviewer.vsix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: dtviewer.vsix
+
+  publish:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+      - name: タグと package.json の版が同じか確認
+        run: |
+          TAG=${GITHUB_REF_NAME#v}
+          PKG=$(node -p "require('./package.json').version")
+          [ "$TAG" = "$PKG" ] || { echo "tag $TAG != package $PKG"; exit 1; }
+      - run: npx @vscode/vsce publish --packagePath dtviewer.vsix
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      - run: npx ovsx publish dtviewer.vsix
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}

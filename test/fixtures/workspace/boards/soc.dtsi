@@ -1,0 +1,37 @@
+/ {
+	compatible = "acme,soc";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	uart0: serial@1000 {
+		compatible = "acme,soc-uart";
+		reg = <0x1000 0x100>;
+		status = "disabled";
+	};
+
+	uart1: serial@2000 {
+		compatible = "acme,soc-uart";
+		reg = <0x2000 0x100>;
+		status = "disabled";
+	};
+
+	i2c1: i2c@3000 {
+		compatible = "acme,soc-i2c";
+		reg = <0x3000 0x100>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "disabled";
+	};
+
+	gpio0: gpio@500 {
+		compatible = "acme,soc-gpio";
+		reg = <0x500 0x100>;
+		gpio-controller;
+		#gpio-cells = <2>;
+	};
+
+	mystery@4000 {
+		compatible = "acme,thing";
+		reg = <0x4000 0x10>;
+	};
+};

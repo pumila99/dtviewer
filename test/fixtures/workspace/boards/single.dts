@@ -1,0 +1,6 @@
+/dts-v1/;
+#include "single-board.dtsi"
+
+/ {
+	model = "Single";
+};

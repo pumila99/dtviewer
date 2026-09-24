@@ -1,0 +1,22 @@
+/dts-v1/;
+
+/ {
+	compatible = "acme,errors";
+
+	good {
+		value = <1>;
+	};
+
+	bad {
+		broken = <1 2;
+	};
+
+	after {
+		ok = "yes";
+		ref = <&nosuch>;
+	};
+};
+
+&missing {
+	x = <1>;
+};

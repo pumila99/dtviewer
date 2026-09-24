@@ -1,0 +1,7 @@
+/dts-v1/;
+#include "common.dtsi"
+
+/ {
+	model = "Board B";
+	compatible = "acme,board-b", "acme,soc";
+};
