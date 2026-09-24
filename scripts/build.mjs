@@ -18,6 +18,8 @@ const common = {
   sourcemap: true,
   external: ['vscode'],
   logLevel: 'info',
+  // jsonc-parser などの UMD 版は動的 require でまとめられないので ESM 版を優先する
+  mainFields: ['module', 'main'],
   // ESM 版は import.meta.url を使うので、cjs にまとめるときは CJS 版を使う
   alias: { 'web-tree-sitter': require.resolve('web-tree-sitter') },
 };
