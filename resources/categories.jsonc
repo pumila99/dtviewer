@@ -1,0 +1,33 @@
+// 内蔵のカテゴリ分類ルール。
+// ワークスペースの .dtviewer/categories.jsonc に同じ形で書くと、同じ id はユーザー側が勝つ。
+// 判定: 全ルールを上から compatible で試し、外れたら上からノード名で試す。どれにも当たらなければ「その他」。
+{
+  "categories": [
+    // 電源は i2c の下にぶら下がる PMIC を先に拾うため上に置く
+    { "id": "pmic", "label": "PMIC", "group": "電源",
+      "match": { "compatible": ["rockchip,rk8*", "*pmic*", "*,axp*", "*,tps6*", "*,act8*"], "nodeName": ["pmic@*", "pmic"] } },
+    { "id": "regulator", "label": "レギュレータ", "group": "電源",
+      "match": { "compatible": ["regulator-*", "*regulator*", "*,syr8*", "*,fan53555", "*,tcs4525"], "nodeName": ["regulator*", "vcc*", "vdd*", "dcdc*", "ldo*"] } },
+
+    { "id": "uart", "label": "UART", "group": "通信",
+      "match": { "compatible": ["*uart*", "*serial*"], "nodeName": ["serial@*", "uart@*"] } },
+    { "id": "i2c", "label": "I2C", "group": "通信",
+      "match": { "compatible": ["*i2c*"], "nodeName": ["i2c@*"] } },
+    { "id": "spi", "label": "SPI", "group": "通信",
+      "match": { "compatible": ["*spi*"], "nodeName": ["spi@*"] } },
+
+    { "id": "led", "label": "LED", "group": "GPIO・LED",
+      "match": { "compatible": ["*led*"], "nodeName": ["led*", "leds"] } },
+    { "id": "gpio", "label": "GPIO", "group": "GPIO・LED",
+      "match": { "compatible": ["*gpio*"], "nodeName": ["gpio@*", "gpio*"] } },
+
+    { "id": "display", "label": "ディスプレイ", "group": "ディスプレイ",
+      "match": { "compatible": ["*panel*", "*vop*", "*dsi*", "*hdmi*", "*lvds*", "*display*", "*,lcd*", "*backlight*"],
+                 "nodeName": ["panel*", "vop@*", "dsi@*", "hdmi@*", "lvds*", "display-subsystem", "backlight*"] } },
+
+    { "id": "emmc", "label": "eMMC", "group": "ストレージ",
+      "match": { "compatible": ["*emmc*"], "nodeName": ["emmc@*", "mmc@*emmc*"] } },
+    { "id": "sd", "label": "SD", "group": "ストレージ",
+      "match": { "compatible": ["*dw-mshc*", "*sdhci*", "*,mmc*", "*sdmmc*"], "nodeName": ["mmc@*", "sdmmc@*", "sdio@*", "dwmmc@*"] } }
+  ]
+}

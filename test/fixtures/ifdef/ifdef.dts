@@ -1,0 +1,21 @@
+/dts-v1/;
+
+/ {
+	compatible = "acme,ifdef";
+
+#ifdef USE_LCD
+	panel {
+		compatible = "acme,panel";
+	};
+#else
+	hdmi {
+		compatible = "acme,hdmi";
+	};
+#endif
+
+#if defined(USE_LCD) && USE_LCD > 1
+	backlight {
+		compatible = "pwm-backlight";
+	};
+#endif
+};

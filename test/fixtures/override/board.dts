@@ -1,0 +1,17 @@
+/dts-v1/;
+#include "soc.dtsi"
+#include "board.dtsi"
+
+/ {
+	model = "Override Board";
+	compatible = "acme,board", "acme,soc2";
+};
+
+&i2c1 {
+	clock-frequency = <1000000>;
+
+	pmic: pmic@20 {
+		compatible = "acme,pmic100";
+		reg = <0x20>;
+	};
+};

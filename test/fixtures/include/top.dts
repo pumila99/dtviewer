@@ -1,0 +1,10 @@
+/dts-v1/;
+#include "inc/mid.dtsi"
+
+/ {
+	model = "Include Board";
+};
+
+&deep {
+	status = "okay";
+};

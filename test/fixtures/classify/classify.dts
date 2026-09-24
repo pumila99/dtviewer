@@ -1,0 +1,26 @@
+/dts-v1/;
+
+/ {
+	compatible = "rockchip,rk3328-evb", "rockchip,rk3328";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	serial@ff130000 {
+		compatible = "rockchip,rk3328-uart", "snps,dw-apb-uart";
+		reg = <0xff130000 0x100>;
+	};
+
+	i2c@ff150000 {
+		compatible = "rockchip,rk3328-i2c";
+		reg = <0xff150000 0x1000>;
+	};
+
+	i2c@ff160000 {
+		reg = <0xff160000 0x1000>;
+	};
+
+	mystery@ff170000 {
+		compatible = "acme,unknown-thing";
+		reg = <0xff170000 0x1000>;
+	};
+};

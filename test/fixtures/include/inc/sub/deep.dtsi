@@ -1,0 +1,7 @@
+/ {
+	compatible = "acme,inc";
+	deep: deep-node {
+		from = "deep";
+		status = "disabled";
+	};
+};

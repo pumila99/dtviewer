@@ -1,0 +1,37 @@
+/dts-v1/;
+
+/ {
+	compatible = "acme,del";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	keep: keep@1 {
+		reg = <1 1>;
+		a = <1>;
+		b = <2>;
+	};
+
+	gone: gone@2 {
+		reg = <2 1>;
+	};
+
+	parent {
+		child@5 {
+			reg = <5 1>;
+		};
+		stay {
+		};
+	};
+};
+
+&keep {
+	/delete-property/ b;
+};
+
+/delete-node/ &gone;
+
+/ {
+	parent {
+		/delete-node/ child@5;
+	};
+};
