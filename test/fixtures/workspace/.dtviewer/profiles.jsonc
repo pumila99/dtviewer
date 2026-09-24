@@ -1,0 +1,10 @@
+// 画面テスト用のプロファイル
+{
+  "profiles": {
+    "BoardA": {
+      "top": "boards/a.dts",
+      "include": []
+    }
+  },
+  "default": "BoardA"
+}

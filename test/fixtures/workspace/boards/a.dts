@@ -1,0 +1,15 @@
+/dts-v1/;
+#include "common.dtsi"
+
+/ {
+	model = "Board A";
+	compatible = "acme,board-a", "acme,soc";
+
+	leds {
+		compatible = "gpio-leds";
+
+		led0 {
+			gpios = <&gpio0 1 0>;
+		};
+	};
+};

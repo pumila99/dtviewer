@@ -1,0 +1,6 @@
+/ {
+	compatible = "acme,single";
+
+	deep-node {
+	};
+};

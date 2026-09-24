@@ -1,0 +1,14 @@
+#include "soc.dtsi"
+
+&uart0 {
+	status = "okay";
+};
+
+&i2c1 {
+	status = "okay";
+
+	pmic@20 {
+		compatible = "acme,pmic";
+		reg = <0x20>;
+	};
+};

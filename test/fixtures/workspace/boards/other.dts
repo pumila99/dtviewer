@@ -1,0 +1,6 @@
+/dts-v1/;
+
+/ {
+	model = "Other";
+	compatible = "acme,other";
+};
