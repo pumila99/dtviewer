@@ -1,0 +1,125 @@
+// SPDX-License-Identifier: MIT
+/*
+ * 架空の SoC「demo100」の共通 dtsi（DTビューアのお試し用）
+ */
+#include <dt-bindings/demo.h>
+
+/ {
+	compatible = "demo,demo100";
+	interrupt-parent = <&gic>;
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu0: cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a53";
+			reg = <0x0>;
+		};
+
+		cpu1: cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a53";
+			reg = <0x1>;
+		};
+	};
+
+	memory@60000000 {
+		device_type = "memory";
+		reg = <0x60000000 0x20000000>;
+	};
+
+	gic: interrupt-controller@f0000000 {
+		compatible = "arm,gic-400";
+		reg = <0xf0000000 0x1000>, <0xf0002000 0x2000>;
+		interrupt-controller;
+		#interrupt-cells = <3>;
+	};
+
+	cru: clock-controller@f1000000 {
+		compatible = "demo,demo100-cru";
+		reg = <0xf1000000 0x1000>;
+		#clock-cells = <1>;
+	};
+
+	gpio0: gpio@f2000000 {
+		compatible = "demo,demo100-gpio";
+		reg = <0xf2000000 0x100>;
+		interrupts = <0 DEMO_IRQ(1) IRQ_TYPE_LEVEL_HIGH>;
+		gpio-controller;
+		#gpio-cells = <2>;
+	};
+
+	uart0: serial@f3000000 {
+		compatible = "demo,demo100-uart", "snps,dw-apb-uart";
+		reg = <0xf3000000 0x100>;
+		interrupts = <0 DEMO_IRQ(10) IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&cru DEMO_CLK_UART0>;
+		status = "disabled";
+	};
+
+	uart1: serial@f3010000 {
+		compatible = "demo,demo100-uart", "snps,dw-apb-uart";
+		reg = <0xf3010000 0x100>;
+		interrupts = <0 DEMO_IRQ(11) IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&cru DEMO_CLK_UART1>;
+		status = "disabled";
+	};
+
+	i2c0: i2c@f4000000 {
+		compatible = "demo,demo100-i2c";
+		reg = <0xf4000000 0x1000>;
+		interrupts = <0 DEMO_IRQ(20) IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&cru DEMO_CLK_I2C0>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "disabled";
+	};
+
+	spi0: spi@f5000000 {
+		compatible = "demo,demo100-spi";
+		reg = <0xf5000000 0x1000>;
+		clocks = <&cru DEMO_CLK_SPI0>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "disabled";
+	};
+
+	emmc: mmc@f6000000 {
+		compatible = "demo,demo100-emmc", "snps,dw-mshc";
+		reg = <0xf6000000 0x4000>;
+		clocks = <&cru DEMO_CLK_EMMC>;
+		status = "disabled";
+	};
+
+	sdmmc: mmc@f6010000 {
+		compatible = "demo,demo100-dw-mshc", "snps,dw-mshc";
+		reg = <0xf6010000 0x4000>;
+		clocks = <&cru DEMO_CLK_SDMMC>;
+		status = "disabled";
+	};
+
+	vop: vop@f7000000 {
+		compatible = "demo,demo100-vop";
+		reg = <0xf7000000 0x1000>;
+		clocks = <&cru DEMO_CLK_VOP>;
+		status = "disabled";
+	};
+
+	dsi: dsi@f7010000 {
+		compatible = "demo,demo100-mipi-dsi";
+		reg = <0xf7010000 0x1000>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "disabled";
+	};
+
+	/* ボードで使わないなら /delete-node/ で消せる */
+	debug: debug@f8000000 {
+		compatible = "demo,demo100-debug";
+		reg = <0xf8000000 0x100>;
+	};
+};

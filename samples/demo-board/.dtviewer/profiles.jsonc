@@ -1,0 +1,21 @@
+// DTビューアのプロファイル（お試し用）
+{
+  "profiles": {
+    "DM1000": {
+      "top": "demo100-dm1000.dts",
+      "include": ["include"],
+      "defines": { "USE_LCD": "1" }
+    },
+    "DM1000-noLCD": {
+      "top": "demo100-dm1000.dts",
+      "include": ["include"]
+    },
+    "DM2000": {
+      "top": "demo100-dm2000.dts",
+      "include": ["include"]
+    }
+  },
+  "default": "DM1000",
+  // demo100-myboard.dtsi を開いたときは DM1000 を使う
+  "topByDtsi": { "demo100-myboard.dtsi": "DM1000" }
+}
