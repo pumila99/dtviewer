@@ -185,7 +185,7 @@
     "tree-sitter-devicetree": "^0.15.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.70.1",
-    "vitest": "^5.0.1",
+    "vitest": "^5.0.2",
     "web-tree-sitter": "^0.27.0"
   }
 }
